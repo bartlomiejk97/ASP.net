@@ -1,0 +1,15 @@
+﻿@model LibApp_Gr3.Models.Book
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@Model.Name</h2>
+<ul>
+    <li>Number i stock:  @Model.NumberInStock</li>
+    <li>Available number: @Model.NumberAvailable</li>
+    <li>Author: @Model.Author</li>
+    <li>Publication year: @Model.PublicationYear</li>
+    <li>Publishing house: @Model.PublishingHouse</li>
+</ul>
+<a class='btn btn-secondary' asp-route-id="@Model.Id"  asp-action="Form">Edit</a>

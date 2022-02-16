@@ -1,0 +1,12 @@
+﻿@model LibApp_Gr3.Models.Customer
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul>
+    <li>Name:  @Model.Name</li>
+    <li>Newsletter Subscribed: @Model.HasNewsletterSubscribed.ToString()</li>
+</ul>
+<a class='btn btn-secondary' asp-route-id="@Model.Id"  asp-action="Form">Edit</a>

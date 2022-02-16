@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+
+<table id="customersTable" class="table table-hover">
+    <thead>
+    <tr>
+        <th>Customer</th>
+        <th>Discount Rate</th>
+    </tr>
+    </thead>
+    <tbody>
+       
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function (){
+            $("#customersTable").DataTable({
+                ajax: {
+                    url: 'api/customers',
+                    dataSrc: "",
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href='customers/details/" + customer.id + "'>" + customer.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "membershipType.discountRate"
+                    }
+                ]
+            });
+        });
+    </script>
+}
