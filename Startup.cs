@@ -1,4 +1,5 @@
 using LibApp_Gr3.Data;
+using LibApp_Gr3.Extensions;
 using LibApp_Gr3.Interfaces;
 using LibApp_Gr3.Models;
 using LibApp_Gr3.Services;
@@ -38,6 +39,8 @@ namespace LibApp_Gr3
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
 
@@ -47,7 +50,7 @@ namespace LibApp_Gr3
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -69,7 +72,7 @@ namespace LibApp_Gr3
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-            {               
+            {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -77,6 +80,8 @@ namespace LibApp_Gr3
             });
 
             dbContext.Database.Migrate();
+
+            RolesExtension.SeedRoles(serviceProvider).Wait();
         }
     }
 }

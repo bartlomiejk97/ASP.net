@@ -2,6 +2,7 @@
 using LibApp_Gr3.Models;
 using LibApp_Gr3.Models.DTO;
 using LibApp_Gr3.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +24,7 @@ namespace LibApp_Gr3.Controllers.API
         }
 
         [HttpGet]
+        [Authorize(Roles = "StoreManager, Owner")]
         public ActionResult<List<CustomerDTO>> GetList()
         {
             var _customerList = CustomerService.GetList();
@@ -34,6 +36,7 @@ namespace LibApp_Gr3.Controllers.API
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "StoreManager, Owner")]
         public ActionResult<CustomerDTO> GetItem([FromRoute] int id)
         {
             var _item = CustomerService.GetItem(id);
@@ -45,6 +48,7 @@ namespace LibApp_Gr3.Controllers.API
         }
 
         [HttpPost]
+        [Authorize(Roles = "Owner")]
         public ActionResult Insert([FromBody] CustomerDTO insert)
         {
             try
@@ -61,6 +65,7 @@ namespace LibApp_Gr3.Controllers.API
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Owner")]
         public ActionResult Update([FromRoute] int id, [FromBody] CustomerDTO update)
         {
             try
@@ -77,6 +82,7 @@ namespace LibApp_Gr3.Controllers.API
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Owner")]
         public ActionResult Remove([FromRoute] int id)
         {
             try

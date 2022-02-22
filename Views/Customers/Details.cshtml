@@ -1,12 +1,16 @@
-﻿@model LibApp_Gr3.Models.Customer
+﻿@model LibApp_Gr3.ViewModels.CustomerDetailsViewModel
 
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = Model.Customer.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <ul>
-    <li>Name:  @Model.Name</li>
-    <li>Newsletter Subscribed: @Model.HasNewsletterSubscribed.ToString()</li>
+    <li>Name:  @Model.Customer.Name</li>
+    <li>Newsletter Subscribed: @Model.Customer.HasNewsletterSubscribed.ToString()</li>
 </ul>
-<a class='btn btn-secondary' asp-route-id="@Model.Id"  asp-action="Form">Edit</a>
+
+@if (Model.CanEdit)
+{
+    <a class='btn btn-secondary' asp-route-id="@Model.Customer.Id" asp-action="Form">Edit</a>
+}

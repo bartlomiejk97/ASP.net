@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LibApp_Gr3.Models;
 using LibApp_Gr3.ViewModels;
 using LibApp_Gr3.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibApp_Gr3.Controllers
 {
@@ -16,6 +17,8 @@ namespace LibApp_Gr3.Controllers
         {
             BookService = bookService;
         }
+
+        [Authorize(Roles = "User, StoreManager, Owner")]
         public IActionResult Random()
         {
             var firstBook = new Book() { Name = "English dictionary" };
@@ -35,11 +38,8 @@ namespace LibApp_Gr3.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Edit(int bookId)
-        {
-            return Content("id=" + bookId);
-        }
-
+        
+        [Authorize(Roles = "User, StoreManager, Owner")]
         public IActionResult Index()
         {
             var books = GetBooks();
@@ -47,6 +47,7 @@ namespace LibApp_Gr3.Controllers
             return View(books);
         }
 
+        [Authorize(Roles = "StoreManager, Owner")]
         public IActionResult Form(int? id)
         {
             if (id.HasValue)
@@ -60,6 +61,7 @@ namespace LibApp_Gr3.Controllers
             }
         }
 
+        [Authorize(Roles = "User, StoreManager, Owner")]
         public IActionResult Details(int id)
         {
             var _entity = BookService.GetItem(id);
@@ -69,6 +71,7 @@ namespace LibApp_Gr3.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "StoreManager, Owner")]
         public IActionResult Save(Book book)
         {
             if (!ModelState.IsValid)

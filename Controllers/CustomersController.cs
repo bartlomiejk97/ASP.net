@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LibApp_Gr3.Models;
 using LibApp_Gr3.ViewModels;
 using LibApp_Gr3.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibApp_Gr3.Controllers
 {
@@ -18,16 +19,23 @@ namespace LibApp_Gr3.Controllers
             CustomerService = customerService;
             MembershipTypeService = membershipTypeService;
         }
+        [Authorize(Roles = "StoreManager")]
         public ViewResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = "StoreManager")]
         public IActionResult Details(int id)
         {
+            bool canEdit = User.IsInRole("StoreManager") || User.IsInRole("Owner");
             var _entity = CustomerService.GetItem(id);
 
-            return View(_entity);
+            return View(new CustomerDetailsViewModel()
+            {
+                Customer = _entity,
+                CanEdit = canEdit
+            });
         }
 
         public IActionResult Form(int? id)
